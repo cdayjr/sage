@@ -1,11 +1,11 @@
 {
   "entry": {
     "main": [
-      "./scripts/main.js",
+      "./scripts/main.ts",
       "./styles/main.scss"
     ],
     "customizer": [
-      "./scripts/customizer.js"
+      "./scripts/customizer.ts"
     ]
   },
   "publicPath": "/app/themes/sage",

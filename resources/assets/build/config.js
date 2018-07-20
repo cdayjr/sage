@@ -28,6 +28,7 @@ const config = merge({
     watcher: !!argv.watch,
   },
   watch: [],
+  tsConfig: `${__dirname}/tsconfig.json`,
 }, userConfig);
 
 module.exports = merge(config, {

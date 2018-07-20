@@ -40,15 +40,24 @@ let webpackConfig = {
     rules: [
       {
         enforce: 'pre',
-        test: /\.js$/,
+        test: /\.[tj]sx?$/,
         include: config.paths.assets,
         use: 'eslint',
       },
       {
         enforce: 'pre',
-        test: /\.(js|s?[ca]ss)$/,
+        test: /\.([tj]sx?|s?[ca]ss)$/,
         include: config.paths.assets,
         loader: 'import-glob',
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: [/node_modules(?![/|\\](bootstrap|foundation-sites))/],
+				use: [
+          { loader: 'cache' },
+          { loader: 'buble', options: { objectAssign: 'Object.assign' } },
+					{ loader: 'ts-loader', options: { configFile: config.tsConfig } },
+				],
       },
       {
         test: /\.js$/,
@@ -130,9 +139,7 @@ let webpackConfig = {
   resolveLoader: {
     moduleExtensions: ['-loader'],
   },
-  externals: {
-    jquery: 'jQuery',
-  },
+  externals: {},
   plugins: [
     new CleanPlugin([config.paths.dist], {
       root: config.paths.root,
@@ -154,9 +161,6 @@ let webpackConfig = {
       disable: (config.enabled.watcher),
     }),
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
       Popper: 'popper.js/dist/umd/popper.js',
     }),
     new webpack.LoaderOptionsPlugin({
@@ -172,7 +176,7 @@ let webpackConfig = {
       },
     }),
     new webpack.LoaderOptionsPlugin({
-      test: /\.js$/,
+      test: /\.[tj]sx?$/,
       options: {
         eslint: { failOnWarning: false, failOnError: true },
       },
